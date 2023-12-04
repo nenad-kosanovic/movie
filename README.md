@@ -5,6 +5,8 @@ Implement a python server using flask that can create, fetch, update & delete in
 - Genres (can be multiple)
 - Runtime
 - Description
+
+
 Also implement a GoLang client which communicates with the above server to create/update/delete some movies. 
 IMPORTANT NOTE: Use proto as means of serialisation for sending requests b/w client & server
 
