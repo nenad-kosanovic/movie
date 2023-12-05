@@ -1,6 +1,10 @@
 from flask import request, jsonify
 import uuid
 
+from flask.json import dumps
+from pypkg.pb.movie_pb2 import MovieProto
+from google.protobuf.json_format import Parse
+
 from .. import db
 from .models import Movie
 from sqlalchemy.orm import selectinload
@@ -10,7 +14,6 @@ from sqlalchemy.orm import selectinload
 def list_all_movies_controller():
     movies = Movie.query.options(selectinload(Movie.genres)).all()
     return jsonify(movies)
-
 
 def create_movie_controller():
     req_json = request.get_json()
@@ -33,6 +36,13 @@ def retrieve_movie_controller(movie_id):
     return jsonify(Movie.query.get(movie_id))
 
 
+def retrieve_movie_protobuf_controller(movie_id):
+    movie = Movie.query.get(movie_id)
+    proto_movie = Parse(dumps(movie), MovieProto())
+
+    return proto_movie.SerializeToString()
+
+
 def update_movie_controller(movie_id):
     req_json = request.get_json()
     movie = Movie.query.get(movie_id)
@@ -42,7 +52,7 @@ def update_movie_controller(movie_id):
     movie.runtime = req_json["runtime"]
     movie.description = req_json["description"]
     db.session.commit()
-    
+
     return jsonify(Movie.query.get(movie_id))
 
 

@@ -1,2 +1,7 @@
 GET http://localhost:5001/movies
 content-type: application/json
+
+###
+
+GET http://localhost:5001/movies/117b06b6-0354-4c31-bf64-ddb7241337ff
+content-type: application/json
