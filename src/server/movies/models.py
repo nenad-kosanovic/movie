@@ -9,33 +9,19 @@ from .. import db # from __init__.py
 
 @dataclass
 class Genre(db.Model):
-    id: str
-    name: str
+    id: str = db.Column(db.String(50), primary_key=True, nullable=False, unique=True)
+    name: str = db.Column(db.String(225), nullable=False)
     
-    id = db.Column(db.String(50), primary_key=True, nullable=False, unique=True)
-    name         = db.Column(db.String(225), nullable=False)
- 
 @dataclass
 class Movie(db.Model):
-    id: str
-    created: datetime
-    updated: datetime
-    name: str
-    language: str
-    runtime: int
-    description: str
+    id: str = db.Column(db.String(50), primary_key=True, nullable=False, unique=True)
+    created: datetime = db.Column(db.DateTime(timezone=True), default=datetime.now)
+    updated: datetime = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
+    name: str = db.Column(db.String(225), nullable=False)
+    language: str = db.Column(db.String(100))
+    runtime: int = db.Column(db.BigInteger)
+    description: str = db.Column(db.Text)
     
-    # Auto Generated Fields:
-    id           = db.Column(db.String(50), primary_key=True, nullable=False, unique=True)
-    created      = db.Column(db.DateTime(timezone=True), default=datetime.now)                           # The Date of the Instance Creation => Created one Time when Instantiation
-    updated      = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)    # The Date of the Instance Update => Changed with Every Update
-    
-    # Input by User Fields:
-    name         = db.Column(db.String(225), nullable=False)
-    language     = db.Column(db.String(100))
-    runtime      = db.Column(db.BigInteger)
-    description  = db.Column(db.Text)
-
     genres = db.relationship("MovieGenre", back_populates='movie')   
     
 class MovieGenre(db.Model)    :
